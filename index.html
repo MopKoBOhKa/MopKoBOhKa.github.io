@@ -18,7 +18,6 @@
     overflow-x: hidden;
   }
 
-  /* тёмный фон с градиентными пятнами */
   body::before {
     content: "";
     position: fixed;
@@ -31,17 +30,43 @@
 
   .card { width: 100%; max-width: 440px; text-align: center; padding-top: 20px; }
 
+  /* контейнер аватарки: место зарезервировано всегда */
   .avatar {
-    width: 112px; height: 112px;
+    position: relative;
+    width: 112px;
+    height: 112px;
+    margin: 0 auto;
     border-radius: 50%;
-    object-fit: cover;
     border: 3px solid rgba(255,255,255,.12);
-    background: rgba(255,255,255,.06);
+    background: linear-gradient(135deg, rgba(120,80,255,.45), rgba(0,200,255,.35));
+    overflow: hidden;
+    display: grid;
+    place-items: center;
   }
+
+  /* заглушка — первая буква имени */
+  .avatar .placeholder {
+    font-size: 42px;
+    font-weight: 700;
+    color: rgba(255,255,255,.85);
+    user-select: none;
+  }
+
+  /* фото поверх заглушки, если загрузилось */
+  .avatar img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity .3s ease;
+  }
+
+  .avatar img.loaded { opacity: 1; }
 
   h1 { font-size: 24px; margin-top: 18px; letter-spacing: -.02em; }
 
-  /* переключаемые вкладки */
   .tabs {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -136,7 +161,7 @@
 
   @media (prefers-reduced-motion: reduce) {
     .link { animation: none; }
-    .tab, .link, .arrow { transition: none; }
+    .tab, .link, .arrow, .avatar img { transition: none; }
   }
 
   @media (max-width: 380px) {
@@ -148,7 +173,12 @@
 <body>
 
 <main class="card">
-  <img class="avatar" src="avatar.jpg" alt="Аватар" onerror="this.style.display='none'">
+  <div class="avatar">
+    <span class="placeholder" id="avatarLetter">Т</span>
+    <img src="avatar.jpg" alt="Аватар"
+         onload="this.classList.add('loaded')"
+         onerror="this.remove()">
+  </div>
   <h1>Твоё Имя</h1>
 
   <div class="tabs" role="tablist">
@@ -160,16 +190,15 @@
 </main>
 
 <script>
-  // ✏️ РЕДАКТИРУЙ ЗДЕСЬ: юзернеймы и ссылки
   const data = {
     text: [
-      { name: "Telegram", url: "https://t.me/username",                icon: "telegram", color: "26A5E4" },
-      { name: "MAX",      url: "https://max.ru/username",              icon: "",         color: "3B82F6" },
-      { name: "X",        url: "https://x.com/username",               icon: "x",        color: "ffffff" },
-      { name: "VK",       url: "https://vk.com/username",              icon: "vk",       color: "0077FF" },
-      { name: "Bluesky",  url: "https://bsky.app/profile/username",    icon: "bluesky",  color: "0085FF" },
-      { name: "Tumblr",   url: "https://tumblr.com/username",          icon: "tumblr",   color: "ffffff" },
-      { name: "Mastodon", url: "https://mastodon.social/@username",    icon: "mastodon", color: "6364FF" },
+      { name: "Telegram", url: "https://t.me/username",             icon: "telegram", color: "26A5E4" },
+      { name: "MAX",      url: "https://max.ru/username",           icon: "",         color: "3B82F6" },
+      { name: "X",        url: "https://x.com/username",            icon: "x",        color: "ffffff" },
+      { name: "VK",       url: "https://vk.com/username",           icon: "vk",       color: "0077FF" },
+      { name: "Bluesky",  url: "https://bsky.app/profile/username", icon: "bluesky",  color: "0085FF" },
+      { name: "Tumblr",   url: "https://tumblr.com/username",       icon: "tumblr",   color: "ffffff" },
+      { name: "Mastodon", url: "https://mastodon.social/@username", icon: "mastodon", color: "6364FF" },
     ],
     stream: [
       { name: "Twitch",         url: "https://twitch.tv/username",           icon: "twitch",  color: "9146FF" },
@@ -190,6 +219,11 @@
 
   const linksEl = document.getElementById("links");
   const tabs = document.querySelectorAll(".tab");
+
+  // первая буква имени — для заглушки аватара
+  const nameEl = document.querySelector("h1");
+  document.getElementById("avatarLetter").textContent =
+    (nameEl.textContent.trim()[0] || "?").toUpperCase();
 
   function render(tab) {
     linksEl.innerHTML = data[tab].map((l, i) => {
