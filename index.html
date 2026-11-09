@@ -204,17 +204,6 @@ h1 {
   letter-spacing: -.02em;
 }
 
-.link .arrow {
-  margin-left: auto;
-  opacity: .3;
-  transition: .18s;
-}
-
-.link:hover .arrow {
-  opacity: 1;
-  transform: translateX(3px);
-}
-
 /* УГОЛ С DONATEALERTS И MEMEALERTS */
 
 .corner-links {
@@ -246,15 +235,6 @@ h1 {
   color: rgba(255,255,255,.95);
 }
 
-.corner-links .link .arrow {
-  margin-left: 8px;
-  opacity: .4;
-}
-
-.corner-links .link:hover .arrow {
-  opacity: .8;
-}
-
 /* OBS OVERLAY */
 
 .obs-overlay {
@@ -283,7 +263,7 @@ h1 {
   .link {
     animation: none;
   }
-  .tab, .link, .arrow, .avatar img {
+  .tab, .link, .avatar img {
     transition: none;
   }
 }
@@ -738,13 +718,6 @@ function render(category) {
 
     link.appendChild(name);
 
-    // Стрелка
-    const arrow = document.createElement("span");
-    arrow.className = "arrow";
-    arrow.textContent = "→";
-
-    link.appendChild(arrow);
-
     linksElement.appendChild(link);
 
   });
@@ -777,13 +750,6 @@ function renderCornerLinks() {
     name.textContent = platform.name;
 
     link.appendChild(name);
-
-    // Стрелка
-    const arrow = document.createElement("span");
-    arrow.className = "arrow";
-    arrow.textContent = "→";
-
-    link.appendChild(arrow);
 
     cornerLinksElement.appendChild(link);
 
