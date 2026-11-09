@@ -215,6 +215,36 @@ h1 {
   transform: translateX(3px);
 }
 
+/* УГОЛ С DONATEALERTS И MEMEALERTS */
+
+.corner-links {
+  position: fixed;
+  left: 20px;
+  bottom: 20px;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.corner-links .link {
+  padding: 10px 14px;
+  min-height: auto;
+  font-size: 14px;
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.12);
+  backdrop-filter: blur(10px);
+  animation: none;
+}
+
+.corner-links .link:hover {
+  transform: translateY(-1px);
+}
+
+.corner-links .link .arrow {
+  margin-left: 8px;
+}
+
 @keyframes rise {
   from {
     opacity: 0;
@@ -242,6 +272,14 @@ h1 {
   }
   h1 {
     font-size: 21px;
+  }
+  .corner-links {
+    left: 10px;
+    bottom: 10px;
+  }
+  .corner-links .link {
+    padding: 8px 12px;
+    font-size: 13px;
   }
 }
 </style>
@@ -279,6 +317,8 @@ h1 {
   <nav class="links" id="links" aria-live="polite"></nav>
 
 </main>
+
+<div class="corner-links" id="cornerLinks"></div>
 
 <script>
 
@@ -365,21 +405,12 @@ const data = {
     },
 
     {
-      name: "MemeAlerts",
-      url: "https://memealerts.com/6687013116a2955d0fe1a2da",
-      icon: "memealerts",
-      color: "FFB84D",
-      domain: "memealerts.com",
-      fallback: "MA"
-    },
-
-    {
-      name: "ИТД",
+      name: "ITD",
       url: "https://итд.com/@morkba1488",
       icon: "itd",
       color: "A78BFA",
       domain: "итд.com",
-      fallback: "ИТД"
+      fallback: "ITD"
     }
 
   ],
@@ -489,6 +520,33 @@ const data = {
   ]
 
 };
+
+
+// ==========================================
+// УГОЛ: DONATEALERTS + MEMEALERTS
+// ==========================================
+
+const cornerPlatforms = [
+
+  {
+    name: "DonateAlerts",
+    url: "https://dalink.to/mopkobohka",
+    icon: "dalink",
+    color: "FF6B6B",
+    domain: "dalink.to",
+    fallback: "DA"
+  },
+
+  {
+    name: "MemeAlerts",
+    url: "https://memealerts.com/6687013116a2955d0fe1a2da",
+    icon: "memealerts",
+    color: "FFB84D",
+    domain: "memealerts.com",
+    fallback: "MA"
+  }
+
+];
 
 
 // ==========================================
@@ -622,6 +680,7 @@ function createIcon(platform) {
 // ==========================================
 
 const linksElement = document.getElementById("links");
+const cornerLinksElement = document.getElementById("cornerLinks");
 const tabs = document.querySelectorAll(".tab");
 
 function render(category) {
@@ -663,6 +722,46 @@ function render(category) {
 
 
 // ==========================================
+// ОТОБРАЖЕНИЕ УГЛОВЫХ ССЫЛОК
+// ==========================================
+
+function renderCornerLinks() {
+
+  cornerLinksElement.innerHTML = "";
+
+  cornerPlatforms.forEach((platform) => {
+
+    const link = document.createElement("a");
+
+    link.className = "link";
+    link.href = platform.url;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+
+    // Иконка
+    link.appendChild(createIcon(platform));
+
+    // Название
+    const name = document.createElement("span");
+    name.textContent = platform.name;
+
+    link.appendChild(name);
+
+    // Стрелка
+    const arrow = document.createElement("span");
+    arrow.className = "arrow";
+    arrow.textContent = "→";
+
+    link.appendChild(arrow);
+
+    cornerLinksElement.appendChild(link);
+
+  });
+
+}
+
+
+// ==========================================
 // ПЕРЕКЛЮЧЕНИЕ ВКЛАДОК
 // ==========================================
 
@@ -692,6 +791,7 @@ tabs.forEach(tab => {
 // ==========================================
 
 render("text");
+renderCornerLinks();
 
 </script>
 
