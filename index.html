@@ -204,36 +204,38 @@ h1 {
   letter-spacing: -.02em;
 }
 
-/* НИЗ СТРАНИЦЫ: DONATEALERTS + MEMEALERTS */
+/* ВЕРХНИЙ ЛЕВЫЙ УГОЛ: ТОЛЬКО ИКОНКИ */
 
-.corner-links {
-  width: 100%;
-  max-width: 440px;
-  margin: 32px auto 0;
-  padding: 0 4px;
+.corner-icons {
+  position: fixed;
+  top: 18px;
+  left: 18px;
+  z-index: 100;
   display: flex;
-  flex-direction: column;
-  gap: 8px;
-  align-items: flex-start;
+  gap: 12px;
+  align-items: center;
 }
 
-.corner-links .link {
-  padding: 4px 0;
-  min-height: auto;
-  font-size: 14px;
-  background: none;
-  border: 0;
-  backdrop-filter: none;
-  color: rgba(255,255,255,.6);
-  animation: none;
+.corner-icons a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  opacity: .75;
+  transition: opacity .18s ease, transform .18s ease;
 }
 
-.corner-links .link:hover,
-.corner-links .link:focus-visible {
-  transform: none;
-  background: none;
-  border: 0;
-  color: rgba(255,255,255,.95);
+.corner-icons a:hover,
+.corner-icons a:focus-visible {
+  opacity: 1;
+  transform: translateY(-1px);
+  outline: none;
+}
+
+.corner-icons .ico {
+  width: 28px;
+  height: 28px;
 }
 
 /* OBS OVERLAY */
@@ -264,7 +266,7 @@ h1 {
   .link {
     animation: none;
   }
-  .tab, .link, .avatar img {
+  .tab, .link, .avatar img, .corner-icons a {
     transition: none;
   }
 }
@@ -277,8 +279,10 @@ h1 {
   h1 {
     font-size: 21px;
   }
-  .corner-links .link {
-    font-size: 13px;
+  .corner-icons {
+    top: 12px;
+    left: 12px;
+    gap: 10px;
   }
 }
 </style>
@@ -317,7 +321,7 @@ h1 {
 
 </main>
 
-<div class="corner-links" id="cornerLinks"></div>
+<div class="corner-icons" id="cornerIcons"></div>
 
 <iframe
   class="obs-overlay"
@@ -441,9 +445,9 @@ const data = {
     {
       name: "VK Live",
       url: "https://live.vkvideo.ru/carrot1488",
-      icon: "live.vk",
+      icon: "live.vkvideo",
       color: "0077FF",
-      domain: "live.vk.com"
+      domain: "live.vkvideo.ru"
     },
 
     {
@@ -531,7 +535,7 @@ const data = {
 
 
 // ==========================================
-// НИЗ СТРАНИЦЫ: DONATEALERTS + MEMEALERTS
+// ВЕРХНИЙ ЛЕВЫЙ УГОЛ: ИКОНКИ
 // ==========================================
 
 const cornerPlatforms = [
@@ -616,7 +620,7 @@ function createIcon(platform) {
 
     const img = document.createElement("img");
 
-    img.alt = "";
+    img.alt = platform.name;
     img.loading = "lazy";
 
     img.onload = () => {
@@ -659,7 +663,7 @@ function createIcon(platform) {
 
     const img = document.createElement("img");
 
-    img.alt = "";
+    img.alt = platform.name;
     img.loading = "lazy";
 
     img.onload = () => {
@@ -688,7 +692,7 @@ function createIcon(platform) {
 // ==========================================
 
 const linksElement = document.getElementById("links");
-const cornerLinksElement = document.getElementById("cornerLinks");
+const cornerIconsElement = document.getElementById("cornerIcons");
 const tabs = document.querySelectorAll(".tab");
 
 function render(category) {
@@ -723,32 +727,27 @@ function render(category) {
 
 
 // ==========================================
-// ОТОБРАЖЕНИЕ НИЖНИХ ССЫЛОК
+// ОТОБРАЖЕНИЕ ИКОНОК В УГЛУ
 // ==========================================
 
-function renderCornerLinks() {
+function renderCornerIcons() {
 
-  cornerLinksElement.innerHTML = "";
+  cornerIconsElement.innerHTML = "";
 
   cornerPlatforms.forEach((platform) => {
 
     const link = document.createElement("a");
 
-    link.className = "link";
     link.href = platform.url;
     link.target = "_blank";
     link.rel = "noopener noreferrer";
+    link.title = platform.name;
+    link.setAttribute("aria-label", platform.name);
 
-    // Иконка
+    // Только иконка, без текста
     link.appendChild(createIcon(platform));
 
-    // Название
-    const name = document.createElement("span");
-    name.textContent = platform.name;
-
-    link.appendChild(name);
-
-    cornerLinksElement.appendChild(link);
+    cornerIconsElement.appendChild(link);
 
   });
 
@@ -785,7 +784,7 @@ tabs.forEach(tab => {
 // ==========================================
 
 render("text");
-renderCornerLinks();
+renderCornerIcons();
 
 </script>
 
