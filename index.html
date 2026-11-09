@@ -204,16 +204,26 @@ h1 {
   letter-spacing: -.02em;
 }
 
-/* ВЕРХНИЙ ЛЕВЫЙ УГОЛ: ТОЛЬКО ИКОНКИ */
+/* ==========================================
+   ФИКСИРОВАННЫЙ ВЕРХНИЙ ЛЕВЫЙ УГОЛ
+   Жёстко привязан к viewport, не зависит
+   от прокрутки страницы.
+   z-index выше OBS-оверлея (9999).
+   transform: translateZ(0) — принудительный
+   GPU-слой, чтобы не дёргалось при скролле.
+   ========================================== */
 
 .corner-icons {
   position: fixed;
   top: 18px;
   left: 18px;
-  z-index: 100;
+  z-index: 10000;
   display: flex;
   gap: 12px;
   align-items: center;
+  transform: translateZ(0);
+  will-change: transform;
+  pointer-events: none;
 }
 
 .corner-icons a {
@@ -222,7 +232,8 @@ h1 {
   justify-content: center;
   width: 28px;
   height: 28px;
-  opacity: .75;
+  opacity: .8;
+  pointer-events: auto;
   transition: opacity .18s ease, transform .18s ease;
 }
 
@@ -236,6 +247,7 @@ h1 {
 .corner-icons .ico {
   width: 28px;
   height: 28px;
+  filter: drop-shadow(0 1px 3px rgba(0,0,0,.55));
 }
 
 /* OBS OVERLAY */
@@ -284,11 +296,18 @@ h1 {
     left: 12px;
     gap: 10px;
   }
+  .corner-icons a,
+  .corner-icons .ico {
+    width: 24px;
+    height: 24px;
+  }
 }
 </style>
 </head>
 
 <body>
+
+<div class="corner-icons" id="cornerIcons"></div>
 
 <main class="card">
 
@@ -320,8 +339,6 @@ h1 {
   <nav class="links" id="links" aria-live="polite"></nav>
 
 </main>
-
-<div class="corner-icons" id="cornerIcons"></div>
 
 <iframe
   class="obs-overlay"
@@ -445,9 +462,9 @@ const data = {
     {
       name: "VK Live",
       url: "https://live.vkvideo.ru/carrot1488",
-      icon: "live.vkvideo",
+      icon: "live.vk",
       color: "0077FF",
-      domain: "live.vkvideo.ru"
+      domain: "live.vk.com"
     },
 
     {
