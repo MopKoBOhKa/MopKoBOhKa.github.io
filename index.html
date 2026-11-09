@@ -204,26 +204,27 @@ h1 {
   letter-spacing: -.02em;
 }
 
-/* УГОЛ С DONATEALERTS И MEMEALERTS */
+/* НИЗ СТРАНИЦЫ: DONATEALERTS + MEMEALERTS */
 
 .corner-links {
-  position: fixed;
-  left: 20px;
-  bottom: 20px;
-  z-index: 100;
+  width: 100%;
+  max-width: 440px;
+  margin: 32px auto 0;
+  padding: 0 4px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
+  align-items: flex-start;
 }
 
 .corner-links .link {
-  padding: 6px 4px;
+  padding: 4px 0;
   min-height: auto;
   font-size: 14px;
   background: none;
   border: 0;
   backdrop-filter: none;
-  color: rgba(255,255,255,.65);
+  color: rgba(255,255,255,.6);
   animation: none;
 }
 
@@ -275,10 +276,6 @@ h1 {
   }
   h1 {
     font-size: 21px;
-  }
-  .corner-links {
-    left: 10px;
-    bottom: 10px;
   }
   .corner-links .link {
     font-size: 13px;
@@ -444,9 +441,9 @@ const data = {
     {
       name: "VK Live",
       url: "https://live.vkvideo.ru/carrot1488",
-      icon: "live.vkvideo",
+      icon: "live.vk",
       color: "0077FF",
-      domain: "live.vkvideo.ru"
+      domain: "live.vk.com"
     },
 
     {
@@ -534,7 +531,7 @@ const data = {
 
 
 // ==========================================
-// УГОЛ: DONATEALERTS + MEMEALERTS
+// НИЗ СТРАНИЦЫ: DONATEALERTS + MEMEALERTS
 // ==========================================
 
 const cornerPlatforms = [
@@ -726,7 +723,7 @@ function render(category) {
 
 
 // ==========================================
-// ОТОБРАЖЕНИЕ УГЛОВЫХ ССЫЛОК
+// ОТОБРАЖЕНИЕ НИЖНИХ ССЫЛОК
 // ==========================================
 
 function renderCornerLinks() {
